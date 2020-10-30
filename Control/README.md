@@ -9,7 +9,7 @@ Two link arm
 
 |                   <!-- -->                    |                         <!-- -->                         |                         <!-- -->                         |                        <!-- -->                                  |
 | :--------------------------------------: | :-------------------------------------------------: | :----------------------------------------------: | :------------------------------------------------------: |
-| ![PID_setpoint](figure/Setpoint_PID.gif) | ![PID_setpoint_IK](figure\Setpoint_PID_with_IK.gif) | ![PID_setpoint_IK](figure\PID_path_tracking.gif) | ![PID_setpoint_IK](figure\PID_path_tracking_with_IK.gif) |
+| ![PID_setpoint](figure/Setpoint_PID.gif) | ![PID_setpoint_IK](figure/Setpoint_PID_with_IK.gif) | ![PID_setpoint_IK](figure/PID_path_tracking.gif) | ![PID_setpoint_IK](figure/PID_path_tracking_with_IK.gif) |
 
 
 
