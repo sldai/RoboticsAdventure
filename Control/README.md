@@ -2,7 +2,7 @@ Overview
 ----------
 
 This repository implements some common control algorithms, including PID, dynamic programming, LQR, MPC, and test them on
-some dynamic/kinematic systems, including two link arm, invert pendulum, car, quadrotor.
+some kinematic/dynamic systems, including two link arm, invert pendulum, car, quadrotor.
 
 Two link arm
 ----------
