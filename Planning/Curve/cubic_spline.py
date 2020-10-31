@@ -195,8 +195,8 @@ def test_spline2d():
     plt.plot(rx, ry, "-r", label="spline")
     plt.grid(True)
     plt.axis("equal")
-    plt.xlabel("s[m]")
-    plt.ylabel("y[m]")
+    plt.xlabel("x [m]")
+    plt.ylabel("y [m]")
     plt.title('cubic spline 2D')
     plt.legend()
 
