@@ -1,6 +1,4 @@
 
-
-
 import math
 import numpy as np
 import matplotlib.pyplot as plt
@@ -21,18 +19,19 @@ class CubicPolynomial:
             [[x1-self.a0-self.a1*T],
              [v1-self.a1]]
         )
-        X = np.linalg.solve(A,b)
+        X = np.linalg.solve(A, b)
         self.a2 = X[0]
         self.a3 = X[1]
-    
+
     def calc_xt(self, t):
         return self.a0+self.a1*t+self.a2*t**2+self.a3*t**3
-    
+
     def calc_dxt(self, t):
         return self.a1+self.a2*2*t+self.a3*3*t**2
 
     def calc_ddxt(self, t):
         return self.a2*2+self.a3*6*t
+
 
 class QuinticPolynomial:
     def __init__(self, x0, v0, a0, x1, v1, a1, T):
@@ -58,7 +57,7 @@ class QuinticPolynomial:
 
     def calc_xt(self, t):
         xt = self.a0 + self.a1 * t + self.a2 * t ** 2 + \
-                self.a3 * t ** 3 + self.a4 * t ** 4 + self.a5 * t ** 5
+            self.a3 * t ** 3 + self.a4 * t ** 4 + self.a5 * t ** 5
 
         return xt
 
@@ -69,7 +68,8 @@ class QuinticPolynomial:
         return dxt
 
     def calc_ddxt(self, t):
-        ddxt = 2 * self.a2 + 6 * self.a3 * t + 12 * self.a4 * t ** 2 + 20 * self.a5 * t ** 3
+        ddxt = 2 * self.a2 + 6 * self.a3 * t + 12 * \
+            self.a4 * t ** 2 + 20 * self.a5 * t ** 3
 
         return ddxt
 
@@ -77,11 +77,12 @@ class QuinticPolynomial:
         dddxt = 6 * self.a3 + 24 * self.a4 * t + 60 * self.a5 * t ** 2
         return dddxt
 
+
 class CubicPolynomial2D:
     def __init__(self, x0, vx0, x1, vx1, y0, vy0, y1, vy1, T):
         self.x_cubic = CubicPolynomial(x0, vx0, x1, vx1, T)
         self.y_cubic = CubicPolynomial(y0, vy0, y1, vy1, T)
-    
+
     def calc_position(self, t):
         r"""
         calc position
@@ -119,7 +120,7 @@ class CubicPolynomial2D:
         dy = self.y_cubic.calc_dxt(t)
         yaw = math.atan2(dy, dx)
         return yaw
-    
+
     def calc_acc(self, t):
         r"""
         calc acceleration
@@ -127,12 +128,13 @@ class CubicPolynomial2D:
         ddx = self.x_cubic.calc_ddxt(t)
         ddy = self.y_cubic.calc_ddxt(t)
         return ddx, ddy
+
 
 class QuinticPolynomial2D:
     def __init__(self, x0, vx0, ax0, x1, vx1, ax1, y0, vy0, ay0, y1, vy1, ay1, T):
         self.x_cubic = QuinticPolynomial(x0, vx0, ax0, x1, vx1, ax1, T)
         self.y_cubic = QuinticPolynomial(y0, vy0, ay0, y1, vy1, ay1, T)
-    
+
     def calc_position(self, t):
         r"""
         calc position
@@ -170,7 +172,7 @@ class QuinticPolynomial2D:
         dy = self.y_cubic.calc_dxt(t)
         yaw = math.atan2(dy, dx)
         return yaw
-    
+
     def calc_acc(self, t):
         r"""
         calc acceleration
@@ -178,6 +180,7 @@ class QuinticPolynomial2D:
         ddx = self.x_cubic.calc_ddxt(t)
         ddy = self.y_cubic.calc_ddxt(t)
         return ddx, ddy
+
 
 class Trajectory:
     def __init__(self):
@@ -190,13 +193,13 @@ class Trajectory:
         self.jerk = []
         self.k = []
 
-import imageio
+
 def simulation_cubic():
     sx, sy, syaw, sv, sa = 10.0, 10.0, np.deg2rad(0.0), 4.0, 1.0
     gx, gy, gyaw, gv, ga = 30.0, -10.0, np.deg2rad(180.0), 4.0, 0.0
 
     MAX_ACCEL = 2.0  # max accel [m/s2]
-    MAX_CURV = 1/2.0 # max curvature [1/m]
+    MAX_CURV = 1/2.0  # max curvature [1/m]
     dt = 0.1  # T tick [s]
 
     MIN_T = 5
@@ -264,12 +267,13 @@ def simulation_cubic():
 
     plt.show()
 
+
 def simulation_quintic():
     sx, sy, syaw, sv, sa = 10.0, 10.0, np.deg2rad(0.0), 4.0, 1.0
     gx, gy, gyaw, gv, ga = 30.0, -10.0, np.deg2rad(180.0), 4.0, 0
 
     MAX_ACCEL = 2.0  # max accel [m/s2]
-    MAX_CURV = 1/2.0 # max curvature [1/m]
+    MAX_CURV = 1/2.0  # max curvature [1/m]
     dt = 0.1  # T tick [s]
 
     MIN_T = 5
@@ -290,7 +294,8 @@ def simulation_quintic():
 
     for T in np.arange(MIN_T, 100, T_STEP):
         path = Trajectory()
-        cp = QuinticPolynomial2D(sx, sv_x, sa_x, gx, gv_x, ga_x, sy, sv_y, sa_y, gy, gv_y, ga_y, T)
+        cp = QuinticPolynomial2D(
+            sx, sv_x, sa_x, gx, gv_x, ga_x, sy, sv_y, sa_y, gy, gv_y, ga_y, T)
 
         for t in np.arange(0.0, T + dt, dt):
             path.t.append(t)
@@ -332,7 +337,8 @@ def simulation_quintic():
         draw.Car(gx, gy, gyaw, 1.5, 3)
         draw.Car(path.x[i], path.y[i], path.yaw[i], 1.5, 3)
 
-        plt.title(f"Quintic Polynomial Curves: speed {int(path.v[i]*10)/10} m/s")
+        plt.title(
+            f"Quintic Polynomial Curves: speed {int(path.v[i]*10)/10} m/s")
         plt.grid(True)
         plt.pause(0.001)
 
