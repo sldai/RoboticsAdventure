@@ -583,30 +583,29 @@ def path12(x, y, phi):
 
 ################### end rs words ##########################
 
-def main():
-    # points to be followed
-    pts = [(-6, -7), (-6, 0), (-4, 6), (0, 5),
-           (0, -2), (-2, -6), (3, -5), (3, 6), (6, 4)]
 
-    # generate PATH so the vectors are pointing at each other
-    PATH = []
-    for i in range(len(pts) - 1):
-        dx = pts[i+1][0] - pts[i][0]
-        dy = pts[i+1][1] - pts[i][1]
-        theta = math.atan2(dy, dx)
-        PATH.append((pts[i][0], pts[i][1], theta))
-    PATH.append((pts[-1][0], pts[-1][1], 0))
+import draw
+def main():
+    PATH = [(0, 0, 0), (10, 10, -90), (20, 5, 60), (30, 10, 120),
+           (35, -5, 30), (25, -10, -120), (15, -15, 100), (0, -10, -90)]
 
     for i in range(len(PATH) - 1):
         sx, sy, syaw = PATH[i]
         gx, gy, gyaw = PATH[i+1]
-
-        rs = ReedsShepp(sx, sy, syaw, gx, gy, gyaw, 1.0, 0.1)
+        syaw = math.radians(syaw)
+        gyaw = math.radians(gyaw)
+        rs = ReedsShepp(sx, sy, syaw, gx, gy, gyaw, 1.0/4, 0.1)
         paths = rs.get_all_paths()
-        for path in paths:
-            plt.plot(path[:, 0], path[:, 1])
+        # for path in paths:
+        #     plt.plot(path[:, 0], path[:, 1])
         opt_path = rs.get_optimal_path()
-        plt.plot(opt_path[:,0], opt_path[:,1], linewidth=2, color='r')
+        plt.plot(opt_path[:,0], opt_path[:,1], linewidth=1, color='gray')
+
+    for x, y, theta in PATH:
+        draw.Arrow(x, y, np.deg2rad(theta), 2, 'blueviolet')
+    plt.xlabel('X [m]')
+    plt.ylabel('Y [m]')
+    plt.title('Reeds Shepp curve')
     plt.axis("equal")
     plt.show()
 

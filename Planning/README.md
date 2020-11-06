@@ -16,3 +16,10 @@ Polynomail Curve
 |                                    |                                         |
 | :--------------------------------: | :-------------------------------------: |
 | ![spline](figure/cubic_polynomial.gif) | ![spline2d](figure/quintic_polynomial.gif) |
+
+Dubins/Reeds Shepp Curve
+----------
+
+|                                    |                                         |
+| :--------------------------------: | :-------------------------------------: |
+| ![dubins](figure/dubins_curve.png) | ![Reeds Shepp](figure/rs_curve.png) |
