@@ -15,6 +15,7 @@ Two link arm
 Car
 ---------
 
-|             |                    |                   |               |   |
-|:-----------:|:------------------:|:-----------------:|:-------------:|:-:|
-| ![purepursuit](figure/pp.gif) | ![frontwheelfeedback](figure/frontwheel.gif) | ![rearwheelfeedback](figure/rearwheel.gif) | ![lqr kinematic](figure/lqr_kinematic.gif) |   |
+|                                            |                                              |
+|:------------------------------------------:|:--------------------------------------------:|
+|        ![purepursuit](figure/pp.gif)       | ![frontwheelfeedback](figure/frontwheel.gif) |
+| ![rearwheelfeedback](figure/rearwheel.gif) |  ![lqr kinematic](figure/lqr_kinematic.gif)  |
