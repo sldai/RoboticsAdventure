@@ -27,6 +27,10 @@ Car
     <td><img src=figure/pp.gif></td>
     <td><img src=figure/frontwheel.gif></td>
   </tr>
+</tbody>
+</table>
+<table>
+<tbody>
   <tr>
     <td><img src=figure/rearwheel.gif></td>
     <td><img src=figure/lqr_kinematic.gif></td>
