@@ -172,23 +172,33 @@ class Spline2D:
         yaw = math.atan2(dy, dx)
         return yaw
 
+    def get_path(self, step_size=0.1):
+        s = np.arange(0, self.s[-1], step_size)
+        rx, ry, ryaw, rk = [], [], [], []
+        for i_s in s:
+            ix, iy = self.calc_position(i_s)
+            rx.append(ix)
+            ry.append(iy)
+            ryaw.append(self.calc_yaw(i_s))
+            rk.append(self.calc_curvature(i_s)) 
+        return rx, ry, ryaw, rk       
 
 def test_spline2d():
     print("Spline 2D test")
     import matplotlib.pyplot as plt
-    x = [0.0, 8.5, 5.0, 1.5, 10.5]
-    y = [0.0, 5.0, 8.0, 3.0, 2.0]
+    x = [0, 10, 20, 30, 40,30,20,10,0]
+    y = [0,10,0,-10,0,10,0,-10,0]
 
     sp = Spline2D(x, y)
     s = np.arange(0, sp.s[-1], 0.1)
 
-    rx, ry, ryaw, rk = [], [], [], []
-    for i_s in s:
-        ix, iy = sp.calc_position(i_s)
-        rx.append(ix)
-        ry.append(iy)
-        ryaw.append(sp.calc_yaw(i_s))
-        rk.append(sp.calc_curvature(i_s))
+    rx, ry, ryaw, rk = sp.get_path()
+    # for i_s in s:
+    #     ix, iy = sp.calc_position(i_s)
+    #     rx.append(ix)
+    #     ry.append(iy)
+    #     ryaw.append(sp.calc_yaw(i_s))
+    #     rk.append(sp.calc_curvature(i_s))
 
     flg, ax = plt.subplots(1)
     plt.plot(x, y, "xb", label="input")

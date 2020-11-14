@@ -4,6 +4,7 @@ Ref: the paper https://msp.org/pjm/1990/145-2/p06.xhtml
      reference code https://github.com/nathanlct/reeds-shepp-curves
 """
 
+import draw
 import matplotlib.pyplot as plt
 import numpy as np
 import math
@@ -28,6 +29,7 @@ def R(x, y):
     theta = math.atan2(y, x)
     return r, theta
 
+
 def circle_move(x, y, theta, R, alpha):
     """The car moves alpha rad along a circle with radius R
     Args:
@@ -49,13 +51,13 @@ def circle_move(x, y, theta, R, alpha):
     return x_n, y_n, theta_n
 
 
-class Steering(Enum):
+class Steering:
     LEFT = 1
     RIGHT = 2
     STRAIGHT = 3
 
 
-class Gear(Enum):
+class Gear:
     FORWARD = 1
     BACKWARD = 2
 
@@ -98,7 +100,7 @@ class PathElement():
 
 
 class ReedsShepp(object):
-    def __init__(self, sx, sy, syaw, gx, gy, gyaw, max_curvature, step_size):
+    def __init__(self, sx, sy, syaw, gx, gy, gyaw, max_curvature, step_size=0.1):
         self.sx = sx
         self.sy = sy
         self.syaw = syaw
@@ -210,7 +212,7 @@ class ReedsShepp(object):
         s = s*self.max_curvature
         cx, cy, cyaw = self.sx, self.sy, self.syaw
         c_curv = 0.0
-
+        c_gear = Gear.FORWARD
         for seg_ind, seg in enumerate(norm_path):
             if s > seg.param:
                 cx, cy, cyaw = self.__move_segment(
@@ -225,9 +227,10 @@ class ReedsShepp(object):
                     c_curv = self.max_curvature
                 elif seg.steering == Steering.RIGHT:
                     c_curv = -self.max_curvature
+                c_gear = 2 if seg.gear == Gear.BACKWARD else 1
                 break
 
-        return cx, cy, cyaw, c_curv
+        return cx, cy, cyaw, c_curv, c_gear
 
     def get_optimal_path(self):
         """Get the optimal path
@@ -252,6 +255,23 @@ class ReedsShepp(object):
             waypoints = np.array([self.calc_config(s, ind) for s in s_list])
             paths_list.append(waypoints)
         return paths_list
+
+    @staticmethod
+    def slice_path(way_points):
+        """Slice the path into segments by the gear mode
+        """
+        segs = []
+        start = 0
+        gear_start = way_points[start][-1]
+        for i in range(len(way_points)):
+            gear = way_points[i][-1]
+            if gear != gear_start:
+                segs.append(way_points[start:i])
+                start = i
+                gear_start = gear
+        segs.append(way_points[start:])
+        return segs
+
 
 ################ timeflip and reflect operation, ################
 ################ see https://msp.org/pjm/1990/145-2/p06.xhtml ###
@@ -584,10 +604,9 @@ def path12(x, y, phi):
 ################### end rs words ##########################
 
 
-import draw
 def main():
     PATH = [(0, 0, 0), (10, 10, -90), (20, 5, 60), (30, 10, 120),
-           (35, -5, 30), (25, -10, -120), (15, -15, 100), (0, -10, -90)]
+            (35, -5, 30), (25, -10, -120), (15, -15, 100), (0, -10, -90)]
 
     for i in range(len(PATH) - 1):
         sx, sy, syaw = PATH[i]
@@ -599,7 +618,7 @@ def main():
         # for path in paths:
         #     plt.plot(path[:, 0], path[:, 1])
         opt_path = rs.get_optimal_path()
-        plt.plot(opt_path[:,0], opt_path[:,1], linewidth=1, color='gray')
+        plt.plot(opt_path[:, 0], opt_path[:, 1], linewidth=1, color='gray')
 
     for x, y, theta in PATH:
         draw.Arrow(x, y, np.deg2rad(theta), 2, 'blueviolet')

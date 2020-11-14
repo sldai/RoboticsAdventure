@@ -1,3 +1,10 @@
+"""Implement the polynomial path.
+
+From [Local Path planning And Motion Control For Agv In Positioning](http://ieeexplore.ieee.org/document/637936/),
+the quintc polynomial path is optimal with respect to the jerk cost.
+
+"""
+
 
 import math
 import numpy as np
