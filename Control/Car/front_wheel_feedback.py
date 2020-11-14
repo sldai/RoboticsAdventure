@@ -223,7 +223,6 @@ def generate_path(s):
 
     return [x_ref], [y_ref], [yaw_ref], [direct], [curv]
 
-import imageio
 
 def main():
     # generate path
@@ -251,7 +250,6 @@ def main():
 
     dt = Param.dt
 
-    imgs = []
     for x, y, yaw, gear, k in zip(x_ref, y_ref, yaw_ref, direct, curv):
         t = 0.0
 
@@ -301,14 +299,10 @@ def main():
             plt.axis("equal")
             plt.title("FrontWheelFeedback: v=" +
                       str(node.v * 3.6)[:4] + "km/h")
-            fname = 'tmp.png'
-            plt.savefig(fname)
-            imgs.append(plt.imread(fname))
             plt.gcf().canvas.mpl_connect('key_release_event',
                                          lambda event:
                                          [exit(0) if event.key == 'escape' else None])
             plt.pause(0.001)
-    imageio.mimsave('frontwheel.gif', imgs, duration=Param.dt)
     plt.show()
 
 
