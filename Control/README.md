@@ -7,29 +7,29 @@ some kinematic/dynamic systems, including two link arm, invert pendulum, car, qu
 Two link arm
 ----------
 
-|                   <!-- -->                    |                         <!-- -->                         |                         <!-- -->                         |                        <!-- -->                                  |
-| :--------------------------------------: | :-------------------------------------------------: | :----------------------------------------------: | :------------------------------------------------------: |
-| ![PID_setpoint](figure/Setpoint_PID.gif) | ![PID_setpoint_IK](figure/Setpoint_PID_with_IK.gif) | ![PID_setpoint_IK](figure/PID_path_tracking.gif) | ![PID_setpoint_IK](figure/PID_path_tracking_with_IK.gif) |
-
+<table>
+<tbody>
+  <tr>
+    <td><img src=figure/Setpoint_PID.gif></td>
+    <td><img src=figure/Setpoint_PID_with_IK.gif></td>
+    <td><img src=figure/PID_path_tracking.gif></td>
+    <td><img src=figure/PID_path_tracking_with_IK.gif></td>
+  </tr>
+</tbody>
+</table>
 
 Car
 ---------
 
 <table>
-<thead>
-  <tr>
-    <th></th>
-    <th></th>
-  </tr>
-</thead>
 <tbody>
   <tr>
-    <td>![purepursuit](figure/pp.gif)</td>
-    <td>![frontwheelfeedback](figure/frontwheel.gif)</td>
+    <td><img src=figure/pp.gif></td>
+    <td><img src=figure/frontwheel.gif></td>
   </tr>
   <tr>
-    <td>![rearwheelfeedback](figure/rearwheel.gif)</td>
-    <td>![lqr kinematic](figure/lqr_kinematic.gif)</td>
+    <td><img src=figure/rearwheel.gif></td>
+    <td><img src=figure/lqr_kinematic.gif></td>
   </tr>
 </tbody>
 </table>
