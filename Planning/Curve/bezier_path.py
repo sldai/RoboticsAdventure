@@ -1,8 +1,8 @@
 """
-bezier path
-
-author: Atsushi Sakai(@Atsushi_twi)
-modified: huiming zhou
+bezier path: 
+ref:
+https://en.wikipedia.org/wiki/B%C3%A9zier_curve
+https://github.com/zhm-real/MotionPlanning
 """
 
 import numpy as np
@@ -10,9 +10,85 @@ import matplotlib.pyplot as plt
 from scipy.special import comb
 import draw
 
+class BezierCurve(object):
+    """Bezier polynomial curve is defined as 
+    the sum of Bernstein basis polynomials
+    1 = (t+(1-t))^{n} = \sum_{v=0}^{n}b_{v,n}(t)
+    b_{v,n}(t) = \binom{v}{n} t^v (1-t)^{n-v}
+    """
+    def __init__(self, control_points):
+        """
+        Args:
+            control_points (array_like): [p0,p1,...,pn]
+        """
+        super().__init__()
+        self.control_points = np.array(control_points)
+        self.degree = len(control_points)-1
+        n = self.degree
+        self.w = self.bezier_derivatives_control_points(self.control_points, n)
 
-def calc_4points_bezier_path(sx, sy, syaw, gx, gy, gyaw, offset):
+    @staticmethod
+    def Bernstein_func(n, v, t):
+        return comb(n,v) * np.power(t,v) * np.power(1-t,n-v)
+    
+    @staticmethod
+    def bezier_derivatives_control_points(control_points, n_derivatives):
+        """
+        A derivative of a bezier curve is a bezier curve.
+        See https://pomax.github.io/bezierinfo/#derivatives
+        for detailed explanations
+        """
+        w = {0: control_points}
+        for i in range(n_derivatives):
+            n = len(w[i])-1
+            w[i + 1] = np.array([n * (w[i][j + 1] - w[i][j])
+                                for j in range(n)])
+        return w
 
+    def calc_deriv(self, t, order=0):
+        """Calculate the nth order derivative at t
+        Args:
+            t (float, array): t \in [0,1]
+        
+        Returns:
+            point (1d vector, 2d array)
+        """
+        control_points = self.w[order]
+        n = len(control_points)-1
+        t = np.array(t)
+        if len(t.shape)>0:
+            point = np.zeros([len(t), control_points.shape[1]])
+            for v in range(n+1):
+                weights = self.Bernstein_func(n, v, t)    
+                point += weights[:,None] * control_points[v]
+        else: # scalar
+            point = np.zeros_like(control_points[0])
+            for v in range(n+1):
+                weights = self.Bernstein_func(n, v, t)    
+                point += weights * control_points[v]
+        return point
+
+    def calc_path(self, num=100):
+        """A wrapper to get bezier path
+        Args:
+            num (int): number of way points
+
+        Returns:
+            path (array): way points
+        """
+        path = self.calc_deriv(np.linspace(0,1,num), 0)
+        return path
+
+
+def curvature(dx, dy, ddx, ddy):
+    return (dx * ddy - dy * ddx) / (dx ** 2 + dy ** 2) ** (3 / 2)
+
+
+def main():
+    sx, sy, syaw = 10.0, 1.0, np.deg2rad(180.0)
+    gx, gy, gyaw = 0.0, -3.0, np.deg2rad(-45.0)
+
+    offset = 3.0
     dist = np.hypot(sx - gx, sy - gy) / offset
     control_points = np.array(
         [[sx, sy],
@@ -20,126 +96,41 @@ def calc_4points_bezier_path(sx, sy, syaw, gx, gy, gyaw, offset):
          [gx - dist * np.cos(gyaw), gy - dist * np.sin(gyaw)],
          [gx, gy]])
 
-    path = calc_bezier_path(control_points, n_points=100)
-
-    return path, control_points
-
-
-def calc_bezier_path(control_points, n_points=100):
-    traj = []
-
-    for t in np.linspace(0, 1, n_points):
-        traj.append(bezier(t, control_points))
-
-    return np.array(traj)
-
-
-def Comb(n, i, t):
-    return comb(n, i) * t ** i * (1 - t) ** (n - i)
-
-
-def bezier(t, control_points):
-    n = len(control_points) - 1
-    return np.sum([Comb(n, i, t) * control_points[i] for i in range(n + 1)], axis=0)
-
-
-def bezier_derivatives_control_points(control_points, n_derivatives):
-    w = {0: control_points}
-
-    for i in range(n_derivatives):
-        n = len(w[i])
-        w[i + 1] = np.array([(n - 1) * (w[i][j + 1] - w[i][j])
-                             for j in range(n - 1)])
-
-    return w
-
-
-def curvature(dx, dy, ddx, ddy):
-    return (dx * ddy - dy * ddx) / (dx ** 2 + dy ** 2) ** (3 / 2)
-
-
-def simulation():
-    sx = [-3, 0, 4, 6]
-    sy = [2, 0, 1.5, 6]
-
-    ratio = np.linspace(0, 1, 100)
-    pathx, pathy = [], []
-
-    for t in ratio:
-        x, y = [], []
-        for i in range(len(sx) - 1):
-            x.append(sx[i + 1] * t + sx[i] * (1 - t))
-            y.append(sy[i + 1] * t + sy[i] * (1 - t))
-
-        xx, yy = [], []
-        for i in range(len(x) - 1):
-            xx.append(x[i + 1] * t + x[i] * (1 - t))
-            yy.append(y[i + 1] * t + y[i] * (1 - t))
-
-        px = xx[1] * t + xx[0] * (1 - t)
-        py = yy[1] * t + yy[0] * (1 - t)
-        pathx.append(px)
-        pathy.append(py)
-
-        plt.cla()
-        plt.plot(sx, sy, linestyle='-', marker='o', color='dimgray', label="Control Points")
-        plt.plot(x, y, color='dodgerblue')
-        plt.plot(xx, yy, color='cyan')
-        plt.plot(pathx, pathy, color='darkorange', linewidth=2, label="Bezier Path")
-        plt.plot(px, py, marker='o')
-        plt.axis("equal")
-        plt.legend()
-        plt.title("Cubic Bezier Curve demo")
-        plt.grid(True)
-        plt.pause(0.001)
-
-    plt.show()
-
-
-def main():
-    sx, sy, syaw = 10.0, 1.0, np.deg2rad(180.0)
-    gx, gy, gyaw = 0.0, -3.0, np.deg2rad(-45.0)
-    offset = 3.0
-
-    path, control_points = calc_4points_bezier_path(sx, sy, syaw, gx, gy, gyaw, offset)
-
-    t = 0.8  # Number in [0, 1]
-    x_target, y_target = bezier(t, control_points)
-    derivatives_cp = bezier_derivatives_control_points(control_points, 2)
-    point = bezier(t, control_points)
-    dt = bezier(t, derivatives_cp[1])
-    ddt = bezier(t, derivatives_cp[2])
+    bz = BezierCurve(control_points)
+    path = bz.calc_path(100)
+    t = 0.8
+    point = bz.calc_deriv(t,0)
+    pdt = bz.calc_deriv(t,1)
+    pddt = bz.calc_deriv(t,2)
     # Radius of curv
-    radius = 1 / curvature(dt[0], dt[1], ddt[0], ddt[1])
+    radius = 1 / curvature(pdt[0], pdt[1], pddt[0], pddt[1])
     # Normalize derivative
-    dt /= np.linalg.norm(dt, 2)
-    tangent = np.array([point, point + dt])
-    normal = np.array([point, point + [- dt[1], dt[0]]])
-    curvature_center = point + np.array([- dt[1], dt[0]]) * radius
-    circle = plt.Circle(tuple(curvature_center), radius,
-                        color=(0, 0.8, 0.8), fill=False, linewidth=1)
+    pdt /= np.linalg.norm(pdt, 2)
+    tangent = np.array([point, point + pdt])
+    normal = np.array([point, point + [- pdt[1], pdt[0]]])
+    curvature_center = point + np.array([- pdt[1], pdt[0]]) * radius
 
-    assert path.T[0][0] == sx, "path is invalid"
-    assert path.T[1][0] == sy, "path is invalid"
-    assert path.T[0][-1] == gx, "path is invalid"
-    assert path.T[1][-1] == gy, "path is invalid"
+    assert path[0,0] == sx and path[0,1] == sy, "path is invalid"
+    assert path[-1,0] == gx and path[-1,1] == gy, "path is invalid"
 
     fig, ax = plt.subplots()
-    ax.plot(path.T[0], path.T[1], label="Bezier Path")
+    yaw = np.linspace(-np.pi, np.pi)
+    circle = curvature_center+radius*np.array([np.cos(yaw), np.sin(yaw)]).T
     ax.plot(control_points.T[0], control_points.T[1],
             '--o', label="Control Points")
-    ax.plot(x_target, y_target)
+
+    plt.plot(path[:,0],path[:,1],label='Bezier Curve')
     ax.plot(tangent[:, 0], tangent[:, 1], label="Tangent")
     ax.plot(normal[:, 0], normal[:, 1], label="Normal")
-    ax.add_artist(circle)
+    ax.plot(circle[:,0],circle[:,1],c='cyan',label='Curvature Circle')
     draw.Arrow(sx, sy, syaw, 1, "darkorange")
     draw.Arrow(gx, gy, gyaw, 1, "darkorange")
     plt.grid(True)
-    plt.title("Bezier Path: from Atsushi's work")
+    plt.title("Bezier Path")
     ax.axis("equal")
+    plt.legend()
     plt.show()
-
 
 if __name__ == '__main__':
     main()
-    # simulation()
+

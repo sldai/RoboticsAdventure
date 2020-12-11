@@ -8,14 +8,14 @@ Spline Interpolation
 <table>
 <tbody>
   <tr>
-    <td><img src="figure/cubic_spline.png" alt="cubic_spline"></td>
-    <td><img src="figure/cubic_spline_2D.png" alt="cubic_spline_2D"></td>
+    <td><img src="figure/cubic_spline_2D.png" alt="cubic_spline"></td>
+    <td><img src="figure/bezier_curve.png" alt="bezier_curve"></td>
   </tr>
 </tbody>
 </table>
 
-Polynomail Curve
-----------
+Polynomail Trajectory
+---------------------
 
 <table>
 <tbody>
@@ -37,6 +37,7 @@ Dubins/Reeds Shepp Curve
   </tr>
 </tbody>
 </table>
+
 
 Dynamic Window Approach
 -----------------------

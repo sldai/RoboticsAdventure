@@ -136,7 +136,7 @@ class Spline2D:
     def __calc_s(self, x, y):
         dx = np.diff(x)
         dy = np.diff(y)
-        self.ds = [math.sqrt(idx ** 2 + idy ** 2)
+        self.ds = [1.0
                    for (idx, idy) in zip(dx, dy)]
         s = [0]
         s.extend(np.cumsum(self.ds))
