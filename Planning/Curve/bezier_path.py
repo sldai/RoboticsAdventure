@@ -131,6 +131,43 @@ def main():
     plt.legend()
     plt.show()
 
+def test():
+    P0 = [0,0]
+    P1 = [0, 9]
+    P2 = [9, 9]
+    P3 = [9, 0]
+
+    control_points = np.array(
+        [P0,P1,P2,P3], dtype=float)
+
+    bz = BezierCurve(control_points)
+    path = bz.calc_path(100)
+    t = 2/3
+    point = bz.calc_deriv(t,0)
+    print(point)
+    pdt = bz.calc_deriv(t,1)
+    pddt = bz.calc_deriv(t,2)
+    # Radius of curv
+    radius = 1 / curvature(pdt[0], pdt[1], pddt[0], pddt[1])
+    # Normalize derivative
+    pdt /= np.linalg.norm(pdt, 2)
+    tangent = np.array([point, point + pdt])
+    normal = np.array([point, point + [- pdt[1], pdt[0]]])
+    curvature_center = point + np.array([- pdt[1], pdt[0]]) * radius
+
+    fig, ax = plt.subplots()
+    yaw = np.linspace(-np.pi, np.pi)
+    circle = curvature_center+radius*np.array([np.cos(yaw), np.sin(yaw)]).T
+    ax.plot(control_points.T[0], control_points.T[1],
+            '--o', label="Control Points")
+
+    plt.plot(path[:,0],path[:,1],label='Bezier Curve')
+    ax.plot(tangent[:, 0], tangent[:, 1], label="Tangent")
+    ax.plot(normal[:, 0], normal[:, 1], label="Normal")
+    ax.plot(circle[:,0],circle[:,1],c='cyan',label='Curvature Circle')
+    plt.show()
+
 if __name__ == '__main__':
-    main()
+    # main()
+    test()
 

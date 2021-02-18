@@ -4,7 +4,7 @@
 Ref:
 https://github.com/scikit-image/scikit-image/tree/master/skimage/feature
 """
-
+from scipy.ndimage import maximum_filter
 import numpy as np  
 import matplotlib.pyplot as plt
 from skimage import data, filters, color
@@ -77,7 +77,7 @@ def corner_harris(image, sigma=1, k=0.05):
     traceA = Arr + Acc
 
     response = detA - k * traceA ** 2
-    return response
+    return response 
 
 def corner_shi_tomasi(image, sigma=1):
     """Compute Shi-Tomasi (Kanade-Tomasi) corner measure response image.
@@ -132,7 +132,8 @@ def main():
     # Two squares
     image[30:80, 200:250] = 1
     image[80:130, 250:300] = 1
-
+    image = plt.imread('price_center20.jpeg')
+    image = color.rgb2gray(image)
 
     fig, ax = plt.subplots(nrows=2, ncols=2, figsize=(8,6))
     ax[0,0].imshow(image, cmap='gray')
