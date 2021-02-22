@@ -181,7 +181,7 @@ def main():
     s_start = (2, 2)
     s_goal = (49, 24)
 
-    astar = Dijkstra(s_start, s_goal, res=0.5)
+    astar = Dijkstra(s_start, s_goal, res=1.0)
     plot = plotting.Plotting(s_start, s_goal)
     path, visited = astar.searching()
     plot.animation(visited, path, "Dijkstra*")  # animation

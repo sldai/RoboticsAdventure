@@ -32,6 +32,7 @@ class Plotting:
         self.plot_grid(name)
         self.plot_visited_connect(V1, V2)
         self.plot_path(path)
+        plt.show()
 
     def plot_grid(self, name):
         fig = plt.gcf()

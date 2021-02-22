@@ -68,9 +68,6 @@ class AStar:
             s = self.OPEN.get()
             self.CLOSED.append(s)
 
-            if s == self.s_goal:  # stop condition
-                break
-
             for s_n in self.get_neighbor(s):
                 new_cost = self.g[s] + self.cost(s, s_n)
 
@@ -81,7 +78,9 @@ class AStar:
                     self.g[s_n] = new_cost
                     self.PARENT[s_n] = s
                     self.OPEN.put(s_n, self.f_value(s_n))
-
+            
+            if s == self.s_goal:  # stop condition
+                break
         # transform the index set to node set
         path = self.extract_path(self.PARENT)
         path = self.trans_path(path)
@@ -199,7 +198,7 @@ def main():
     s_start = (2, 2)
     s_goal = (49, 24)
 
-    astar = AStar(s_start, s_goal, "euclidean", res=0.5)
+    astar = AStar(s_start, s_goal, "euclidean", res=1.0)
     plot = plotting.Plotting(s_start, s_goal)
     path, visited = astar.searching()
     plot.animation(visited, path, "A*")  # animation
