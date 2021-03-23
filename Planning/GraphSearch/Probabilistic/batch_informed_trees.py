@@ -13,9 +13,9 @@ import matplotlib.patches as patches
 from scipy.spatial.transform import Rotation as Rot
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) +
-                "/../../")
+                "/../")
 
-from Sampling_based_Planning.rrt_2D import env, plotting, utils
+import env, plotting, utils
 
 
 class Node:

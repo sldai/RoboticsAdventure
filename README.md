@@ -1,3 +1,14 @@
-## Control
+Overview
+------------
+This is a self arrangement of robotics knowledge.
 
-![](figure/PID_path_tracking_with_IK.gif)
+Knowledge Structure
+-------------------
+
+![robotics](figure/knowledge_structure.svg)
+
+
+Code
+----
+
+[Planning](Planning/)

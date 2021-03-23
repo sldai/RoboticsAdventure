@@ -8,10 +8,15 @@ import numpy as np
 import os
 import sys
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__))+'/../')
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 import env
-from rrt import Node
+
+class Node:
+    def __init__(self, n):
+        self.x = n[0]
+        self.y = n[1]
+        self.parent = None
 
 
 class Utils:

@@ -20,14 +20,15 @@ class Node:
         self.parent = None
         self.child = []
 
-class DStar:
+class AnytimeDStar:
     """AStar set the cost + heuristics as the priority
     """
-    def __init__(self, s_start, s_goal, heuristic_type, res=0.5):
+    def __init__(self, s_start, s_goal, heuristic_type, eps, res=0.5):
         self.res = res
         self.s_start = self.pos2ind(s_start)
         self.s_goal = self.pos2ind(s_goal)
         self.heuristic_type = heuristic_type
+        self.eps = eps
 
         self.Env = env.Env()  # class Env
         self.utils = utils.Utils()
@@ -36,6 +37,7 @@ class DStar:
         self.OPEN = my_queue.HeapDict()  # priority queue / OPEN set
         self.CLOSED = []  # CLOSED set / VISITED order
         self.PARENT = {}  # recorded parent
+        self.INCONS = []  # overconsistent node
         self.g = {}  # cost to come
 
     def ind2pos(self, ind):
@@ -71,8 +73,10 @@ class DStar:
                 if new_cost < self.g[s_n]:  # conditions for updating Cost
                     self.g[s_n] = new_cost
                     self.PARENT[s_n] = s
-                    self.OPEN.put(s_n, self.f_value(s_n))
-            
+                    if s_n not in self.CLOSED:
+                        self.OPEN.put(s_n, self.f_value(s_n))
+                    else:
+                        self.INCONS.append(s_n)
             if s == self.s_goal:  # stop condition
                 break
         # transform the index set to node set
@@ -134,7 +138,7 @@ class DStar:
             v_ind = self.pos2ind((v.x,v.y))
             PARENT[v_ind]=self.PARENT[v_ind]
             g[v_ind]=self.g[v_ind]
-            if self.OPEN.find(v_ind):
+            if self.OPEN.find(v_ind) or v_ind in self.INCONS:
                 # condition: if the open node is still 
                 # in the tree, put it in the open list
                 OPEN.put(v_ind,self.f_value(v_ind))
@@ -155,6 +159,7 @@ class DStar:
         self.g = g
         self.OPEN = OPEN
         self.CLOSED = CLOSED
+        self.INCONS = []
     
     def is_collision_obs_add(self, start, end):
         delta = self.utils.delta
@@ -179,7 +184,7 @@ class DStar:
         else:
             # # move the goal
             # self.s_goal = self.PARENT[self.s_goal]
-            
+            self.eps = max(1.0, self.eps-0.3)
             x, y = int(x), int(y)
             if (not hasattr(self, 'obs_add_rm')) or self.obs_add_rm is False:
                 print("Add circle obstacle at: x =", x, ",", "y =", y)
@@ -188,7 +193,7 @@ class DStar:
                 self.plot.obs_circle.append([x, y, 2])
                 self.obs_add_rm = True
             else:
-                self.obs_add = [x, y, 2]
+                # self.obs_add = [x, y, 2]
                 self.utils.obs_circle.pop(-1)
                 self.plot.obs_circle.pop(-1)
                 self.obs_add_rm = False
@@ -290,7 +295,7 @@ class DStar:
         :param s: current state
         :return: f
         """
-        return self.g[s] + self.heuristic(s)
+        return self.g[s] + self.heuristic(s)*self.eps
 
     def extract_path(self, PARENT):
         """
@@ -331,7 +336,7 @@ def main():
     s_start = (2, 2)
     s_goal = (49, 24)
 
-    planner = DStar(s_start, s_goal, "euclidean", res=1.0)
+    planner = AnytimeDStar(s_start, s_goal, "euclidean", eps=2.0, res=1.0)
     planner.main()
 
 
