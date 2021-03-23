@@ -1,5 +1,5 @@
 """
-D* 
+Anytime D* 
 """
 
 import os
@@ -92,7 +92,7 @@ class AnytimeDStar:
         self.OPEN.put(self.s_start, self.f_value(self.s_start))
         path, node_list = self.compute_shortest_path()
         self.plot = plotting.Plotting(self.s_start, self.s_goal)
-        self.plot.animation(node_list, path, "A*", show=False)
+        self.plot.animation(node_list, path, "Anytime D*", show=False)
         self.fig = plt.gcf()
         self.fig.canvas.mpl_connect('button_press_event', self.on_press)
         plt.show()
@@ -210,9 +210,10 @@ class AnytimeDStar:
             old, new = self.split_old_new_nodes()
             plt.cla()
             self.plot.plot_visited(new, False, c='-b')
-            self.plot.animation(old, path, "D*", show=False)
+            self.plot.animation(old, path, "Anytime D*", show=False)
             
             self.fig.canvas.draw_idle()
+            
     def split_old_new_nodes(self):
         all_nodes = self.trans_node_list(self.PARENT.keys())
         old = []

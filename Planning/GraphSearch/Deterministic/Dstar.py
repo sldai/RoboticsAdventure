@@ -88,7 +88,7 @@ class DStar:
         self.OPEN.put(self.s_start, self.f_value(self.s_start))
         path, node_list = self.compute_shortest_path()
         self.plot = plotting.Plotting(self.s_start, self.s_goal)
-        self.plot.animation(node_list, path, "A*", show=False)
+        self.plot.animation(node_list, path, "D*", show=False)
         self.fig = plt.gcf()
         self.fig.canvas.mpl_connect('button_press_event', self.on_press)
         plt.show()

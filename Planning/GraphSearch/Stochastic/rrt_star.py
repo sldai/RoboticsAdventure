@@ -8,7 +8,7 @@ import os
 import sys
 import math
 import numpy as np
-
+import matplotlib.pyplot as plt
 sys.path.append(os.path.dirname(os.path.abspath(__file__))+'/../')
 
 import env, plotting, utils, queue
@@ -49,9 +49,10 @@ class RRTStar:
             node_near = self.nearest_neighbor(self.vertex, node_rand)
             node_new = self.new_state(node_near, node_rand)
 
-            if k % 500 == 0:
+            if k % 100 == 0:
                 print(k)
-
+                self.plotting.animation(self.vertex, self.path, "rrt*, N = " + str(k),show=False)
+                plt.pause(0.5)
             if node_new and not self.utils.is_collision(node_near, node_new):
                 neighbor_index = self.find_near_neighbor(node_new)
                 self.vertex.append(node_new)
@@ -61,8 +62,8 @@ class RRTStar:
 
         index = self.search_goal_parent()
         self.path = self.extract_path(self.vertex[index])
-
-        self.plotting.animation(self.vertex, self.path, "rrt*, N = " + str(self.iter_max))
+        self.plotting.animation(self.vertex, self.path, "rrt*, N = " + str(self.iter_max),show=True)
+        
 
     def new_state(self, node_start, node_goal):
         dist, theta = self.get_distance_and_angle(node_start, node_goal)
@@ -161,7 +162,7 @@ def main():
     x_start = (18, 8)  # Starting node
     x_goal = (37, 18)  # Goal node
 
-    rrt_star = RRTStar(x_start, x_goal, 10, 0.10, 20, 2000)
+    rrt_star = RRTStar(x_start, x_goal, 5, 0.10, 20, 2000)
     rrt_star.planning()
 
 

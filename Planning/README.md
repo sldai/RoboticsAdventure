@@ -1,8 +1,44 @@
 Overview
 ----------
 
+Deterministic Search
+--------------------
 
-Spline Interpolation
+<table>
+<tbody>
+  <tr>
+    <td><img src="figure/Dijkstra.png" alt="dijkstra"></td>
+    <td><img src="figure/astar.png" alt="A*"></td>
+  </tr>
+    <tr>
+    <td><img src="figure/dstar.gif" alt="D*"></td>
+    <td><img src="figure/anytime_dstar.gif" alt="Anytime D*"></td>
+  </tr>
+</tbody>
+</table>
+
+Stochastic Search
+--------------------
+
+<table>
+<tbody>
+  <tr>
+    <td><img src="figure/rrt.gif" alt="RRT"></td>
+    <td><img src="figure/rrt_connect.gif" alt="RRT Connect"></td>
+  </tr>
+  <tr>
+    <td><img src="figure/rrtstar.gif" alt="RRT*"></td>
+    <td><img src="figure/dynamic_rrt.gif" alt="Dynamic RRT"></td>
+  </tr>
+    <tr>
+    <td><img src="figure/bitstar.gif" alt="BIT*"></td>
+
+  </tr>
+</tbody>
+</table>
+
+
+Spline Curve
 ----------
 
 <table>
@@ -14,9 +50,9 @@ Spline Interpolation
 </tbody>
 </table>
 
-Polynomail Trajectory
----------------------
-
+<!-- Polynomail Trajectory
+--------------------- -->
+<!--
 <table>
 <tbody>
   <tr>
@@ -24,7 +60,7 @@ Polynomail Trajectory
     <td><img src="figure/quintic_polynomial.gif" alt="quintic_polynomial"></td>
   </tr>
 </tbody>
-</table>
+</table> -->
 
 Dubins/Reeds Shepp Curve
 ----------

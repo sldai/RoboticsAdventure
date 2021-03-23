@@ -14,7 +14,11 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__))+'/../')
 import env, plotting, utils
 
 
-
+class Node:
+    def __init__(self, n):
+        self.x = n[0]
+        self.y = n[1]
+        self.parent = None
 class RRT:
     def __init__(self, s_start, s_goal, step_len, goal_sample_rate, iter_max):
         self.s_start = Node(s_start)
@@ -97,7 +101,7 @@ def main():
     x_start = (2, 2)  # Starting node
     x_goal = (49, 24)  # Goal node
 
-    rrt = RRT(x_start, x_goal, 0.5, 0.05, 10000)
+    rrt = RRT(x_start, x_goal, 0.5, 0.1, 10000)
     path = rrt.planning()
 
     if path:

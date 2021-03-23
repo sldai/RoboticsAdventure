@@ -379,7 +379,7 @@ class BITStar:
         t = np.arange(0, 2 * math.pi + 0.1, 0.2)
         x = [a * math.cos(it) for it in t]
         y = [b * math.sin(it) for it in t]
-        rot = Rot.from_euler('z', -angle).as_dcm()[0:2, 0:2]
+        rot = Rot.from_euler('z', -angle).as_matrix()[0:2, 0:2]
         fx = rot @ np.array([x, y])
         px = np.array(fx[0, :] + cx).flatten()
         py = np.array(fx[1, :] + cy).flatten()
