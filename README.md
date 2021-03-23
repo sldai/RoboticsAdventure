@@ -10,8 +10,9 @@ Knowledge Structure
 
 Sample Code
 -----------
-[Perception](Perception/)
-[Behavior](Behavior/)
-[Planning](Planning/)
-[Control](Control/)
-[Actuation](Actuation/)
+
+- [Perception](Perception/)
+- [Behavior](Behavior/)
+- [Planning](Planning/)
+- [Control](Control/)
+- [Actuation](Actuation/)
