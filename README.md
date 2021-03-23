@@ -8,7 +8,10 @@ Knowledge Structure
 ![robotics](figure/knowledge_structure.svg)
 
 
-Code
-----
-
+Sample Code
+-----------
+[Perception](Perception/)
+[Behavior](Behavior/)
 [Planning](Planning/)
+[Control](Control/)
+[Actuation](Actuation/)
