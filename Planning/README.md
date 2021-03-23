@@ -7,7 +7,7 @@ Deterministic Search
 <table>
 <tbody>
   <tr>
-    <td><img src="figure/Dijkstra.png" alt="dijkstra"></td>
+    <td><img src="figure/dijkstra.png" alt="dijkstra"></td>
     <td><img src="figure/astar.png" alt="A*"></td>
   </tr>
     <tr>
