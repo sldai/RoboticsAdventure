@@ -42,4 +42,3 @@ def generate_DoG_pyramid(gaussian_pyramid):
 
 
 #################### Extrema detection #######################
-
