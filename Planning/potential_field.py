@@ -87,7 +87,7 @@ def Astar_search(sx, sy, gx, gy, ox, oy, rr, reso, minx, miny, maxx, maxy):
     def addNodeToOpen(n):
         d = n.cost
         h = np.hypot(gx-n.x, gy-n.y)
-        open_set.put((d+h, d, n.x_ind, n.y_ind, n))
+        open_set.put((d, d, n.x_ind, n.y_ind, n))
     addNodeToOpen(start_node)
     while not open_set.empty():
         s = open_set.get()[-1]
@@ -237,11 +237,12 @@ def potential_field_planning(sx, sy, gx, gy, ox, oy, reso, rr):
         print(ox,oy)
         plt.plot(np.round((np.array(ox)-minx)/reso), np.round((np.array(oy)-miny)/reso), "o", c="cyan")
         plt.plot(path[:,0], path[:,1],c="orange")
-
+        plt.title("Potential Field with Dijkstra Search")
 
     rx, ry = [sx], [sy]
     motion = get_motion_model()
     previous_ids = deque()
+    cnt = 0
     while d >= reso:
         # minp = float("inf")
         # minix, miniy = -1, -1
@@ -275,8 +276,9 @@ def potential_field_planning(sx, sy, gx, gy, ox, oy, reso, rr):
 
         if show_animation:
             plt.plot(ix, iy, ".r")
-            plt.pause(0.01)
-
+            # plt.pause(0.01)
+            plt.savefig(f"frame_{cnt}.png")
+            cnt += 1
     print("Goal!!")
 
     return rx, ry
@@ -285,31 +287,6 @@ def potential_field_planning(sx, sy, gx, gy, ox, oy, reso, rr):
 def draw_heatmap(data):
     data = np.array(data).T
     plt.pcolor(data, vmax=100.0, cmap=plt.cm.Blues)
-
-
-def test_astar():
-    sx = 0.0  # start x position [m]
-    sy = 10.0  # start y positon [m]
-    gx = 30.0  # goal x position [m]
-    gy = 30.0  # goal y position [m]
-    reso = 0.5  # potential grid size [m]
-    robot_radius = 5.0  # robot radius [m]
-
-    ox = [15.0, 5.0, 20.0, 20.0]  # obstacle x position list [m]
-    oy = [25.0, 15.0, 26.0, 25.0]  # obstacle y position list [m]
-    minx = min(min(ox), sx, gx) - AREA_WIDTH / 2.0
-    miny = min(min(oy), sy, gy) - AREA_WIDTH / 2.0
-    maxx = max(max(ox), sx, gx) + AREA_WIDTH / 2.0
-    maxy = max(max(oy), sy, gy) + AREA_WIDTH / 2.0
-    xw = int(round((maxx - minx) / reso))
-    yw = int(round((maxy - miny) / reso))
-
-    dist_map = Astar_search(gx, gy, sx, sy, ox, oy, robot_radius, reso, minx, miny, maxx, maxy)
-    x_arr = [x for x, y in dist_map.keys()]
-    y_arr = [y for x, y in dist_map.keys()]
-    dist_arr = [v for v in dist_map.values()]
-    plt.scatter(x_arr, y_arr, cmap=dist_arr)
-    print(dist_map.keys())
 
 def main():
     print("potential_field_planning start")

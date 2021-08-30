@@ -56,6 +56,8 @@ Deterministic Search
 </tbody>
 </table>
 
+![potential_field](Planning/figure/potential_field.gif)
+
 Stochastic Search
 --------------------
 
