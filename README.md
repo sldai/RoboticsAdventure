@@ -56,8 +56,6 @@ Deterministic Search
 </tbody>
 </table>
 
-![potential_field](Planning/figure/potential_field.gif)
-
 Stochastic Search
 --------------------
 
@@ -78,12 +76,17 @@ Stochastic Search
 </tbody>
 </table>
 
+Potential Field
+---------------
+
+![potential_field](Planning/figure/potential_field.gif)
+
 RL RRT
 ------
 <iframe width="868" height="488" src="https://www.youtube.com/embed/FtSNSGTWECs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
-Spline Curve
+BSpline Curve
 ----------
 
 <table>
@@ -95,6 +98,27 @@ Spline Curve
 </tbody>
 </table>
 
+Spline Curve
+----------
+
+<table>
+<tbody>
+  <tr>
+    <td><img src="Planning/figure/clamped_basis.png" alt="clamped_basis"></td>
+    <td><img src="Planning/figure/unclamped_basis.png" alt="unclamped_basis"></td>
+    <td><img src="Planning/figure/nonuniform_basis.png" alt="nonuniform_basis"></td>
+  </tr>
+</tbody>
+</table>
+
+<table>
+<tbody>
+  <tr>
+    <td><img src="Planning/figure/BSplineEval.png" alt="bspline_eval"></td>
+    <td><img src="Planning/figure/BSplineInterp.png" alt="bspline_interp"></td>
+  </tr>
+</tbody>
+</table>
 <!-- Polynomail Trajectory
 --------------------- -->
 <!--
