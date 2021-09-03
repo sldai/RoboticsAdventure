@@ -140,9 +140,10 @@ def splineInterp():
     spl = BSpline(knots, ctrl_pts)
     interp_result = np.array([spl.DeBoor(t)
                               for t in np.linspace(0, K-1, num=100)]).T
-
-    plt.plot(points[:, 0], points[:, 1], 'ok',
-             label='Passing points', markerfacecolor='red')
+    plt.plot(points[:, 0], points[:, 1], 'sk',
+             label='Passing points', markerfacecolor='darkorange')
+    plt.plot(ctrl_pts[:, 0], ctrl_pts[:, 1], '--ok',
+             label='Control polygon', markerfacecolor='red')
     plt.plot(interp_result[0], interp_result[1],
              linewidth=2, c="cyan", label="Interpolated curve")
     plt.legend()
