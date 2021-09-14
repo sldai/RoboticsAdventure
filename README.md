@@ -152,6 +152,10 @@ Dynamic Window Approach
 
 --------------------------------------------------
 
+Fast Planner
+------------
+
+![fast_planner](Planning/figure/fast_planner.gif)
 
 ## Control
 
