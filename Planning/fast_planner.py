@@ -135,7 +135,7 @@ class NonUniformBspline(object):
                 delta_t = time_new - time_ori
                 t_inc = delta_t / self.p
                 for j in range(i+2, i + self.p + 2):
-                    self.u[j] += (j-i+1) * t_inc
+                    self.u[j] += (j-i-1) * t_inc
                 for j in range(j+self.p+2, len(self.u)):
                     self.u[j] += delta_t
 
@@ -459,8 +459,8 @@ class BsplineOptimizer(object):
 
         for i in range(self.order, end_idx):
             dist, dist_grad = self.env.evaluateDistGrad(x[i])
-            # if np.linalg.norm(dist_grad) > 1e-4:
-            #     dist_grad /= np.linalg.norm(dist_grad)
+            if np.linalg.norm(dist_grad) > 1e-4:
+                dist_grad /= np.linalg.norm(dist_grad)
 
             if dist < self.dist0:
                 f += (dist - self.dist0)**2
@@ -735,7 +735,7 @@ def AstarSearch(reso, start, end, env: ComplexEnv):
 
     start = np.array(start)
     end = np.array(end)
-    center = start
+    center = (start+end)/2
 
     def posToInd(x, y):
         x_ind = round((x-center[0])/reso)
@@ -749,9 +749,8 @@ def AstarSearch(reso, start, end, env: ComplexEnv):
     node_map = {}
     open_set = PriorityQueue()
     start_node = AstarNode()
-    start_node.x = start[0]
-    start_node.y = start[1]
     start_node.x_ind, start_node.y_ind = posToInd(start[0], start[1])
+    start_node.x, start_node.y = indToPos(start_node.x_ind, start_node.y_ind)
     start_node.parent = None
     start_node.cost = 0.0
 
@@ -859,6 +858,14 @@ plt.title("Initial Control Points")
 opt = BsplineOptimizer(complex_env)
 ctrl_pts_opt = opt.BsplineOptimizeTraj(ctrl_pts, ts, opt.SMOOTHNESS|opt.DISTANCE|opt.FEASIBILITY, 500, 500)
 bspline_opt = NonUniformBspline(ctrl_pts_opt, 3, ts)
+
+# comment below to reallocate time to ensure feasibility
+# bspline_opt.setPhysicalLimits(3,2)
+# while True:
+#     if bspline_opt.reallocateTime():
+#         break
+# print(bspline_opt.getTimeSpan())
+
 t_min, t_max = bspline_opt.getTimeSpan()
 traj_t = np.linspace(t_min, t_max, num=100)
 traj_opt = np.array([bspline_opt.evaluateDeBoor(t) for t in traj_t])
