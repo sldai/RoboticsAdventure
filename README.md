@@ -195,8 +195,7 @@ Car
 
 Quadcopter
 ----------
-
-![track_circle_traj](Control/figure/track_circle_traj.gif)
+<img src="Control/figure/track_circle_traj.gif" alt="track_circle_traj" width="400"/>
 
 --------------------------------------------------
 
