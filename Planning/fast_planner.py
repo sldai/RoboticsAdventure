@@ -859,7 +859,7 @@ opt = BsplineOptimizer(complex_env)
 ctrl_pts_opt = opt.BsplineOptimizeTraj(ctrl_pts, ts, opt.SMOOTHNESS|opt.DISTANCE|opt.FEASIBILITY, 500, 500)
 bspline_opt = NonUniformBspline(ctrl_pts_opt, 3, ts)
 
-# comment below to reallocate time to ensure feasibility
+# uncomment below to reallocate time to ensure feasibility
 # bspline_opt.setPhysicalLimits(3,2)
 # while True:
 #     if bspline_opt.reallocateTime():
