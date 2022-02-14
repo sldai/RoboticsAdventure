@@ -92,16 +92,14 @@ class QuadModel:
             acc = 1.0 / params.mass * (wRb @ (np.array([0, 0, F]))
                                        - np.array([0, 0, params.mass * params.g]))
 
-            # convert angular velocity into world frame
-            wx, wy, wz = sci_Rot.from_quat(
-                quat).as_matrix() @ np.array([p, q, r])
+            wx, wy, wz = p, q, r
             # angular velocity - using quternion
             # http://www.euclideanspace.com/physics/kinematics/angularvelocity/
             K_quat = 2.0  # this enforces the magnitude 1 constraint for the quaternion
             quaterror = 1.0 - quat@quat
-            qdot = (1.0/2) * np.array([[0, -wz, wy, wx],
-                                       [wz,   0, -wx, wy],
-                                       [-wy,  wx,   0, wz],
+            qdot = (1.0/2) * np.array([[0, wz, -wy, wx],
+                                       [-wz,   0, wx, wy],
+                                       [wy,  -wx,   0, wz],
                                        [-wx, -wy, -wz,  0]]).dot(quat) + K_quat * quaterror * quat
 
             # angular acceleration - Euler's equation of motion
@@ -163,16 +161,14 @@ class QuadModel:
             acc = 1.0 / params.mass * (wRb @ (np.array([0, 0, F]))
                                        - np.array([0, 0, params.mass * params.g]))
 
-            # convert angular velocity into world frame
-            wx, wy, wz = sci_Rot.from_quat(
-                quat).as_matrix() @ np.array([p, q, r])
+            wx, wy, wz = p, q, r
             # angular velocity - using quternion
-            # http://www.euclideanspace.com/physics/kinematics/angularvelocity/
+            # ref: https://arxiv.org/abs/1711.02508 Time-integration of rotation rates
             K_quat = 2.0  # this enforces the magnitude 1 constraint for the quaternion
             quaterror = 1.0 - quat@quat
-            qdot = (1.0/2) * np.array([[0, -wz, wy, wx],
-                                       [wz,   0, -wx, wy],
-                                       [-wy,  wx,   0, wz],
+            qdot = (1.0/2) * np.array([[0, wz, -wy, wx],
+                                       [-wz,   0, wx, wy],
+                                       [wy,  -wx,   0, wz],
                                        [-wx, -wy, -wz,  0]]).dot(quat) + K_quat * quaterror * quat
 
             state_dot = np.zeros(13)
@@ -195,6 +191,7 @@ class QuadModel:
 def test_kinematics():
     """Init a random rotation, then make the quadcopter rotate in a fixed angular velocity represented by axis angle. Then compare the simulated result with the ideal result to check the rotation kinematics simulation.
     """
+    params.g = 0
     for _ in range(10):
         omega = np.random.uniform(-1, 1, 3)
         duration = 3
@@ -205,11 +202,10 @@ def test_kinematics():
         dt = 0.1
         for _ in np.arange(0, duration, dt):
             rot_cur = sci_Rot.from_quat(rot_sim.attitude()).as_matrix()
-            rot_sim.update_AW(dt, np.zeros(3), rot_cur.T @
+            rot_sim.update_FW(dt, 0, rot_cur.T @
                               omega)  # pure rotation
         rot_cur = sci_Rot.from_quat(rot_sim.attitude()).as_matrix()
         assert np.max(np.abs(rot_cur-rot_g)) < 1e-4, f"{rot_cur} \n{rot_g}"
-
 
 def test_dynamics():
     """Test rotation dynamics
