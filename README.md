@@ -81,12 +81,9 @@ Potential Field
 
 ![potential_field](Planning/figure/potential_field.gif)
 
-RL RRT
-------
-<iframe width="868" height="488" src="https://www.youtube.com/embed/FtSNSGTWECs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
-BSpline Curve
+Spline Curve
 ----------
 
 <table>
@@ -98,7 +95,7 @@ BSpline Curve
 </tbody>
 </table>
 
-Spline Curve
+BSpline Curve
 ----------
 
 <table>
@@ -119,17 +116,7 @@ Spline Curve
   </tr>
 </tbody>
 </table>
-<!-- Polynomail Trajectory
---------------------- -->
-<!--
-<table>
-<tbody>
-  <tr>
-    <td><img src="figure/cubic_polynomial.gif" alt="cubic_polynomial"></td>
-    <td><img src="figure/quintic_polynomial.gif" alt="quintic_polynomial"></td>
-  </tr>
-</tbody>
-</table> -->
+
 
 Dubins/Reeds Shepp Curve
 ----------
@@ -143,6 +130,9 @@ Dubins/Reeds Shepp Curve
 </tbody>
 </table>
 
+S-Curve Motion Profile
+----------------------
+![s_curve](Planning/figure/s_curve.png)
 
 Dynamic Window Approach
 -----------------------

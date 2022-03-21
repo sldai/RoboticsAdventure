@@ -61,7 +61,7 @@ def se3_control(pos_t, vel_t, quat_t, omega_t, pos_ref, vel_ref, acc_ref, yaw_re
     R_des[:, 1] = Y_b_des
     R_des[:, 2] = Z_b_des
 
-    er = 1/2*vee_map(wRb.T@R_des - R_des.T@wRb)
+    er = 1/2*vee_map(wRb.T@R_des - R_des.T@wRb) # R-R.T -> log(R)
     # reference angular velocity in body frame
     omega_ref = np.array([0, 0, psi_T_dot])
     ew = omega_ref - omega
