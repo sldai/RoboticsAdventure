@@ -22,11 +22,6 @@ Key point features
 ![harris](https://raw.githubusercontent.com/sldai/RoboticsAdventure/master/Perception/Vision/figure/corner_detection.png)
 
 
-ORB SLAM
----------
-
-<iframe width="868" height="488" src="https://www.youtube.com/embed/GWl_Ffzc6oo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 
 GMapping
 --------
