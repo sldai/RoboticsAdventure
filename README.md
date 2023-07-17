@@ -4,9 +4,7 @@ permalink: /publication/2020-07-01-robotics-adventure
 paperurl: 'https://github.com/sldai/RoboticsAdventure'
 ---
 
-This projects contains my robotics knowledge and common robotics algorithm demo.
-
-![Knowledge graph](http://sldai.github.io/images/Robotics_Adventure/knowledge_graph.png)
+This projects contains common robotics algorithm demo.
 
 
 ---------------------------------
